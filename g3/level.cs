@@ -151,12 +151,12 @@ namespace g3
             if (xoff <= 0) xoff += parentForm.Width;
             if (yoff <= 0) yoff += parentForm.Height;
             //Bitmap bitmap = Bitmap.FromFile("b1.jpg");
-            using (Graphics gr = Graphics.FromHwnd(Form1.ActiveForm.Handle)) //draw 4 tiling backrounds on imgdest
+            using (Graphics gr = Graphics.FromImage(imgdest)) //draw 4 tiling backrounds on imgdest
             {
-                BitmapSource bm = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(Properties.Resources.b1.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                //BitmapSource bm = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(Properties.Resources.b1.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                 //BitmapSource bm = BitmapSource.Create(Properties.Resources.b1.Width, Properties.Resources.b1.Height, 96, 96, PixelFormats.Bgr32, null, Properties.Resources.b1, (Properties.Resources.b1.Width * PixelFormats.Bgr32.BitsPerPixel + 7) / 8);
-                CachedBitmap cachedBitmap = new CachedBitmap(bm,BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-                cachedBitmap.
+                //CachedBitmap cachedBitmap = new CachedBitmap(bm,BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                //cachedBitmap.
                 gr.DrawImageUnscaledAndClipped(imgsrc,
                     new Rectangle(-xoff, -yoff, parentForm.Width, parentForm.Height));
                 gr.DrawImageUnscaledAndClipped(imgsrc,
