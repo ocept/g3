@@ -14,10 +14,13 @@ namespace g3
         protected bool active; 
         public string iconPath;
         public Image icon;
+        protected TimeSpan lifeTime;
+        protected DateTime createdTime;
 
         public staticIcon()
         {
             active = true;
+            createdTime = DateTime.Now;
         }
         public bool Active { get { return active; } }
         public int XPos
@@ -28,6 +31,15 @@ namespace g3
                 xPos = value;
             }
         }
+        public bool checkExpired()
+        {
+            if (DateTime.Now - createdTime > lifeTime)
+            {
+                active = false;
+                return true;
+            }
+            return false;
+        }
         public int YPos
         {
             get { return yPos; }
@@ -35,6 +47,10 @@ namespace g3
             {
                 yPos = value;
             }
+        }
+        public void expire()
+        {
+            active = false;
         }
     }
     public class powerHealth : staticIcon
@@ -44,7 +60,7 @@ namespace g3
         {
             //icon = Image.FromFile("health.gif");
             icon = Properties.Resources.health;
-
+            lifeTime = TimeSpan.FromSeconds(5);
             iconPath = "health.gif";
             staticType = staticTypes.powerHealth;
             xPos = XPos;

@@ -16,12 +16,11 @@ namespace g3
     {
 
         static private int MAX_MOBS = 10000;
-        static private int MAX_STATICICONS = 500;
         private mob[] mobs = new mob[MAX_MOBS]; //holds details of all mobile icons on screen
         public int noMobs = 0; //holds no of mobs used -needed?
         private int Player; //holds location in mob array of player
-        private staticIcon[] staticIcons = new staticIcon[MAX_STATICICONS]; //holds details of static objects on screen
-        private int noStaticIcons = 0; //holds no of static icons used
+        //private staticIcon[] staticIcons = new staticIcon[MAX_STATICICONS]; //holds details of static objects on screen
+        private List<staticIcon> staticIcons = new List<staticIcon>();
         private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         private Stopwatch stopwatch = Stopwatch.StartNew();
         public Form1 parentForm;
@@ -59,12 +58,33 @@ namespace g3
             moveMobs(); //move mobs
             mobAttacks(); //calculate mob attacks
             updateMobStatus(); //kill dead mobs
-            aliveTimerUpdate();
+            updateStaticIcons();
+            aliveTimerUpdate(); //update UI
             updateReloadBar();
             updateHealthBar();
             bgUpdate(); //draw background
-            drawMobs();
             drawStaticIcons();
+            drawMobs();
+        }
+
+        private void updateStaticIcons()
+        {
+            foreach (staticIcon iconi in staticIcons)
+            {
+                if (iconi.Active)
+                {
+                    if ((iconi.XPos >= mobs[Player].XPos - 18 && iconi.XPos <= mobs[Player].XPos + 18) && //check if it should be picked up
+                        (iconi.YPos >= mobs[Player].YPos - 18 && iconi.YPos <= mobs[Player].YPos + 18))
+                    {
+                        if (iconi is powerHealth) 
+                        {
+                            mobs[Player].Health += powerHealth.healthValue;
+                            iconi.expire();
+                        }
+                    }
+                    else iconi.checkExpired();
+                }
+            }
         }
 
         private void updateHealthBar()
@@ -107,18 +127,17 @@ namespace g3
         private void spawnMobs()
         {
             Random rand = new Random(DateTime.Now.Millisecond); //seed is millisecond to seperate it from the random location spawning -TODO make more random
-            if (rand.Next(5) == 1) newMob(mob.mobName.spider);
+            if (rand.Next(4) == 1) newMob(mob.mobName.spider);
             if (rand.Next(10) == 2) newMob(mob.mobName.zombie);
-            if (rand.Next(35) == 3) newMob(mob.mobName.human);
+            if (rand.Next(40) == 3) newMob(mob.mobName.human);
         }
         private void spawnPowerups()
         {
             Random rand = new Random();
-            if (rand.Next(7) == 1) //spawn health
+            if (rand.Next(35) == 1) //spawn health
             {
                 //pass positions to class to keep on same Random instance and distibute evenly
-                staticIcons[noStaticIcons] = new powerHealth((rand.Next(parentForm.Width) + screenOffsetX), (rand.Next(parentForm.Height) + screenOffsetY));
-                noStaticIcons++;
+                staticIcons.Add(new powerHealth((rand.Next(parentForm.Width) + screenOffsetX), (rand.Next(parentForm.Height) + screenOffsetY)));
             }
         }
         void playerAttack(object sender, MouseEventArgs e) //event triggered on mouse click
@@ -311,11 +330,9 @@ namespace g3
         {
             using (Graphics gr = Graphics.FromImage(background.Image))
             {
-                for (int i = 0; i < noStaticIcons; i++) //draw icons on individually
+                foreach(staticIcon iconi in staticIcons)
                 {
-                    if (staticIcons[i].Active) gr.DrawImageUnscaledAndClipped(staticIcons[i].icon, new Rectangle(staticIcons[i].XPos - screenOffsetX, staticIcons[i].YPos - screenOffsetY, 18, 18));
-                    //if (staticIcons[i].Active) gr.DrawImageUnscaledAndClipped(Image.FromFile(staticIcons[i].iconPath), new Rectangle(staticIcons[i].XPos - screenOffsetX, staticIcons[i].YPos - screenOffsetY, 18, 18)); //TODO - change icon size automatically
-                    //if (staticIcons[i].Active) gr.DrawIconUnstretched(ico, new Rectangle(staticIcons[i].XPos - screenOffsetX, staticIcons[i].YPos - screenOffsetY, 18, 18));
+                    if (iconi.Active) gr.DrawImageUnscaledAndClipped(iconi.icon, new Rectangle(iconi.XPos - screenOffsetX, iconi.YPos - screenOffsetY, 18, 18)); //TODO - change icon size automatically
                 }
             }
         }

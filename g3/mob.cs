@@ -54,6 +54,8 @@ namespace g3
                     die();
                     //if (mobType = mobName.player) level.playerDeadHandler
                 }
+                else if (health > healthMax)
+                    health = healthMax;
             }
         }
         public double reloadProgress 
@@ -93,7 +95,7 @@ namespace g3
             mobType = mobName.zombie;
             iconPath = "r02";
             speed = 3;
-            health = 60;
+            health = 35;
             attackDamage = 10;
             attackRange = 10;
             healthMax = health;
