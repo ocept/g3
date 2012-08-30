@@ -139,28 +139,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\health.gif.gif" />
+    <Content Include="Resources\b1.jpg" />
+    <Content Include="Resources\health.gif" />
+    <Content Include="Resources\humanIcon.gif" />
+    <Content Include="Resources\r01.gif" />
+    <Content Include="Resources\r02.gif" />
+    <Content Include="Resources\splat1.bmp" />
+    <Content Include="Resources\splat2.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\health.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\b1.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\humanIcon.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\r01.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\r02.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\splat1.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\splat2.bmp" />
+    <Folder Include="bin\Debug\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
