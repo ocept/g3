@@ -67,6 +67,34 @@ namespace g3.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap colourtest {
+            get {
+                object obj = ResourceManager.GetObject("colourtest", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap colourtest2 {
+            get {
+                object obj = ResourceManager.GetObject("colourtest2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap dark {
+            get {
+                object obj = ResourceManager.GetObject("dark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap dark2 {
+            get {
+                object obj = ResourceManager.GetObject("dark2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap health {
             get {
                 object obj = ResourceManager.GetObject("health", resourceCulture);
@@ -77,6 +105,13 @@ namespace g3.Properties {
         internal static System.Drawing.Bitmap humanIcon {
             get {
                 object obj = ResourceManager.GetObject("humanIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap lightmask {
+            get {
+                object obj = ResourceManager.GetObject("lightmask", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

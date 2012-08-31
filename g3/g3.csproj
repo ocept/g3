@@ -140,8 +140,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\b1.jpg" />
+    <None Include="Resources\colourtest.png" />
+    <None Include="Resources\colourtest2.png" />
+    <None Include="Resources\dark.png" />
+    <None Include="Resources\dark2.png" />
     <Content Include="Resources\health.gif" />
     <Content Include="Resources\humanIcon.gif" />
+    <None Include="Resources\lightmask.png" />
     <Content Include="Resources\r01.gif" />
     <Content Include="Resources\r02.gif" />
     <Content Include="Resources\splat1.bmp" />

@@ -9,6 +9,7 @@ using System.Resources;
 using g3.Properties;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Drawing.Imaging;
 
 namespace g3
 {
@@ -65,6 +66,92 @@ namespace g3
             bgUpdate(); //draw background
             drawStaticIcons();
             drawMobs();
+
+            //colourTest();
+            //rotateToCursorTest();
+            drawDarkness();
+        }
+
+        private void drawDarkness()
+        {
+            Image overlay = new Bitmap(Properties.Resources.dark2, parentForm.Width, parentForm.Height);
+            Graphics gr = Graphics.FromImage(overlay);
+            Point p;
+            //draw on mask
+            try
+            {
+                p = parentForm.PointToClient(System.Windows.Forms.Cursor.Position);
+            }
+            catch
+            {
+                p = new Point(0,0);
+            }
+            float y = parentForm.Height / 2 - p.Y;
+            float x = parentForm.Width / 2 - p.X;
+            float angle = (float)Math.Atan2(y, x);
+            gr.TranslateTransform(parentForm.Width / 2 + 9, parentForm.Height / 2); //set origin to middle of screen
+            gr.RotateTransform(-180 + (float) (angle * (180 / Math.PI)));
+            gr.DrawImageUnscaledAndClipped(Properties.Resources.lightmask, new Rectangle(0 , -50, 300, 100));
+
+            //draw mask on, with mask made transparent via colorkey
+            System.Drawing.Color lowerColor = System.Drawing.Color.FromArgb(150, 0, 0);
+            System.Drawing.Color upperColor = System.Drawing.Color.FromArgb(255, 50, 50);
+            ImageAttributes ImgAttr = new ImageAttributes();
+            ImgAttr.SetColorKey(lowerColor, upperColor, ColorAdjustType.Default);
+            Graphics gr2 = Graphics.FromImage(background.Image);
+            gr2.DrawImage(overlay, new Rectangle(0, 0, 960, 600), 0, 0, 960, 600, GraphicsUnit.Pixel, ImgAttr);
+            //gr2.DrawImageUnscaledAndClipped(overlay, new Rectangle(0, 0, 960, 600));
+            gr.Dispose();
+            gr2.Dispose();
+        }
+
+        private void rotateToCursorTest()
+        {
+            Point p = parentForm.PointToClient(System.Windows.Forms.Cursor.Position);
+            float y = parentForm.Height / 2 - p.Y;
+            float x = parentForm.Width / 2 - p.X;
+            float angle = (float)Math.Atan2(y, x);
+            using (Graphics gr = Graphics.FromImage(background.Image))
+            {
+                gr.TranslateTransform(parentForm.Width / 2 + 9, parentForm.Height / 2); //set origin to middle of screen
+                gr.RotateTransform(-180 + (float) (angle * (180 / Math.PI)));
+                gr.DrawImageUnscaledAndClipped(Properties.Resources.lightmask, new Rectangle(0 , -50, 300, 100));
+            }
+        }
+
+        private void colourTest()
+        {
+            Image testImg = new Bitmap(350, 350);
+            using (Graphics gr = Graphics.FromImage(testImg))
+            {
+                ImageAttributes ImgAttr = new ImageAttributes();
+                float[][] colmat = 
+                {
+                new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+                new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f},
+                new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f},
+                new float[] {0.0f, 0.0f, 0.0f, 1.0f, 0.0f},
+                new float[] {0.0f, 0.0f, 0.0f, 0.0f, 1.0f},
+                };
+                ColorMatrix ClrMatrix = new ColorMatrix(colmat);
+                //ImgAttr.SetColorMatrix(ClrMatrix);
+
+                System.Drawing.Color lowerColor = System.Drawing.Color.FromArgb(245, 245, 245);
+                System.Drawing.Color upperColor = System.Drawing.Color.FromArgb(255, 255, 255);
+                ImgAttr.SetColorKey(lowerColor,
+                    upperColor,
+                    ColorAdjustType.Default);
+                gr.RotateTransform(mobs[Player].XPos);
+                gr.DrawImageUnscaledAndClipped(Properties.Resources.colourtest2, new Rectangle(0, 0, 300, 300));
+                //gr.DrawImage(Properties.Resources.colourtest2, new Rectangle(50, 50, 300, 300), 50,50,300,300, GraphicsUnit.Pixel, ImgAttr);
+                gr.DrawImageUnscaledAndClipped(Properties.Resources.colourtest, new Rectangle(50, 50, 350, 350)) ;
+                //gr.DrawImage(Properties.Resources.colourtest2, new Rectangle(50, 50, 300, 300), 50, 50, 300, 300, GraphicsUnit.Pixel, ImgAttr);
+                //gr.DrawImage(Properties.Resources.colourtest, new Rectangle(50, 50, 300, 300), 50,50,300,300, GraphicsUnit.Pixel, ImgAttr);
+                
+                Graphics gr2 = Graphics.FromImage(background.Image);
+                gr2.DrawImage(testImg, new Rectangle(0, 0, 350, 350), 0, 0, 350, 350, GraphicsUnit.Pixel, ImgAttr);
+                gr2.Dispose();
+            }
         }
 
         private void updateStaticIcons()
