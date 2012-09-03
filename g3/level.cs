@@ -26,7 +26,10 @@ namespace g3
         private Stopwatch stopwatch = Stopwatch.StartNew();
         public Form1 parentForm;
         public int screenOffsetX, screenOffsetY; //location of screen compared to origin
+
         private PictureBox background; //background to draw on
+        private Image imgsrc = Properties.Resources.b1;
+
         public delegate void playerDeadHandler(object level, deadPlayerEventArgs e);
         public playerDeadHandler playerDead;
 
@@ -77,6 +80,7 @@ namespace g3
             Image overlay = new Bitmap(Properties.Resources.dark2, parentForm.Width, parentForm.Height);
             Graphics gr = Graphics.FromImage(overlay);
             Point p;
+
             //draw on mask
             try
             {
@@ -91,7 +95,7 @@ namespace g3
             float angle = (float)Math.Atan2(y, x);
             gr.TranslateTransform(parentForm.Width / 2 + 9, parentForm.Height / 2); //set origin to middle of screen
             gr.RotateTransform(-180 + (float) (angle * (180 / Math.PI)));
-            gr.DrawImageUnscaledAndClipped(Properties.Resources.lightmask, new Rectangle(0 , -50, 300, 100));
+            gr.DrawImageUnscaledAndClipped(Properties.Resources.lightmask, new Rectangle(0 , -Resources.lightmask.Height/2, Resources.lightmask.Width, Resources.lightmask.Height));
 
             //draw mask on, with mask made transparent via colorkey
             System.Drawing.Color lowerColor = System.Drawing.Color.FromArgb(150, 0, 0);
@@ -248,7 +252,7 @@ namespace g3
         }
         private void bgUpdate() //move and tile background
         {
-            Image imgsrc = Properties.Resources.b1;
+            
             //TODO improve performance - currently taking ~13% cpu
             Image imgdest = new Bitmap(parentForm.Width, parentForm.Height);
 
@@ -263,6 +267,7 @@ namespace g3
                 //BitmapSource bm = BitmapSource.Create(Properties.Resources.b1.Width, Properties.Resources.b1.Height, 96, 96, PixelFormats.Bgr32, null, Properties.Resources.b1, (Properties.Resources.b1.Width * PixelFormats.Bgr32.BitsPerPixel + 7) / 8);
                 //CachedBitmap cachedBitmap = new CachedBitmap(bm,BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
                 //cachedBitmap.
+
                 gr.DrawImageUnscaledAndClipped(imgsrc,
                     new Rectangle(-xoff, -yoff, parentForm.Width, parentForm.Height));
                 gr.DrawImageUnscaledAndClipped(imgsrc,
