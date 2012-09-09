@@ -11,7 +11,7 @@ namespace g3
     {
         public enum mobName { zombie, spider, human, player };
         public mobName mobType;
-        public int xPos, yPos;
+        public int xPos, yPos, height, width;
         public double bearing, speed, attackDamage, attackRange, sightRange;
         protected double attackTime;
         public string iconPath;
@@ -33,6 +33,8 @@ namespace g3
             lastFired = DateTime.MinValue;
             attackTime = 10000000; 
             sightRange = 350;
+            height = 32;
+            width = 32;
         }
         public bool canAttack 
         { 
@@ -93,7 +95,7 @@ namespace g3
         public zombie(level Level) :base(Level)
         {
             mobType = mobName.zombie;
-            iconPath = "r02";
+            iconPath = "orc";
             speed = 3;
             health = 35;
             attackDamage = 10;
@@ -106,7 +108,7 @@ namespace g3
         public spider(level Level) : base(Level)
         {
             mobType = mobName.spider;
-            iconPath = "r01";
+            iconPath = "SpiderGold";
             health = 30;
             speed = 8;
             attackDamage = 5;
