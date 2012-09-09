@@ -240,8 +240,8 @@ namespace g3
                 for (int i = 0; i < noMobs; i++)
                 {
                     if (i == Player) continue; //dont allow player to attack self
-                    if (e.X + spread >= mobs[i].xPos - screenOffsetX && e.X - spread <= mobs[i].xPos - screenOffsetX + 18 && //if on target
-                        e.Y + spread >= mobs[i].yPos - screenOffsetY && e.Y - spread <= mobs[i].yPos - screenOffsetY + 18)
+                    if (e.X + spread >= mobs[i].xPos - screenOffsetX && e.X - spread <= mobs[i].xPos - screenOffsetX + mobs[i].height && //if on target
+                        e.Y + spread >= mobs[i].yPos - screenOffsetY && e.Y - spread <= mobs[i].yPos - screenOffsetY + mobs[i].width)
                     {
                         mobs[i].Health -= mobs[Player].attackDamage;
                         Console.WriteLine("Player attack on " + i);
@@ -413,7 +413,11 @@ namespace g3
             {
                 for (int i = 0; i < noMobs; i++) //draw mobs individually
                 {
-                    if(mobs[i].Alive) gr.DrawImageUnscaledAndClipped((Image) rm.GetObject(mobs[i].iconPath) , new Rectangle(mobs[i].xPos-screenOffsetX, mobs[i].yPos-screenOffsetY, 18, 18)); //TODO - change icon size automatically
+                    if (mobs[i].Alive)
+                    {
+                        Image mobtodraw = (Image) rm.GetObject(mobs[i].iconPath);
+                        gr.DrawImageUnscaledAndClipped(mobtodraw, new Rectangle(mobs[i].xPos - screenOffsetX, mobs[i].yPos - screenOffsetY, mobtodraw.Width, mobtodraw.Height)); //TODO - change icon size automatically
+                    }
                 }
             }
         }
