@@ -149,9 +149,6 @@
     <Content Include="Resources\humanIcon.gif" />
     <None Include="Resources\lightmask.png" />
     <None Include="Resources\orc.png" />
-    <Content Include="Resources\r01.gif" />
-    <Content Include="Resources\r02.gif" />
-    <None Include="Resources\spd1_rt1.gif" />
     <None Include="Resources\SpiderGold.png" />
     <Content Include="Resources\splat1.bmp" />
     <Content Include="Resources\splat2.bmp" />

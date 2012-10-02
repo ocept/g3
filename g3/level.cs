@@ -44,7 +44,7 @@ namespace g3
             timer.Enabled = true;
             screenOffsetX = 0;
             screenOffsetY = 0;
-            bgInit();
+            initBg();
         }
         public void Dispose()
         {
@@ -66,13 +66,13 @@ namespace g3
             aliveTimerUpdate(); //update UI
             updateReloadBar();
             updateHealthBar();
-            bgUpdate(); //draw background
-            drawStaticIcons();
-            drawMobs();
+            updateBg(); //draw background
+            //drawStaticIcons();
+            //drawMobs();
 
             //colourTest();
             //rotateToCursorTest();
-            drawDarkness();
+            //drawDarkness();
         }
 
         private void drawDarkness()
@@ -197,17 +197,17 @@ namespace g3
             }
 
         }
-        private void bgInit()
+        private void initBg()
         {
             Image imgsrc = Properties.Resources.b1;
             background = new PictureBox();
             background.MouseClick += new MouseEventHandler(playerAttack);
             Image imgdest = new Bitmap(parentForm.Width, parentForm.Height);
-            using (Graphics gr = Graphics.FromImage(imgdest))
-            {
-                gr.DrawImageUnscaledAndClipped(imgsrc,
-                    new Rectangle(0, 0, parentForm.Width, parentForm.Height));
-            }
+            //using (Graphics gr = Graphics.FromImage(imgdest))
+            //{
+            //    gr.DrawImageUnscaledAndClipped(imgsrc,
+            //        new Rectangle(0, 0, parentForm.Width, parentForm.Height));
+            //}
             background.Image = imgdest;
             background.Width = parentForm.Width;
             background.Height = parentForm.Height;
@@ -250,7 +250,7 @@ namespace g3
                 }
             }
         }
-        private void bgUpdate() //move and tile background
+        private void updateBg() //move and tile background
         {
             
             //TODO improve performance - currently taking ~13% cpu
@@ -261,22 +261,29 @@ namespace g3
             if (xoff <= 0) xoff += parentForm.Width;
             if (yoff <= 0) yoff += parentForm.Height;
             //Bitmap bitmap = Bitmap.FromFile("b1.jpg");
-            using (Graphics gr = Graphics.FromImage(imgdest)) //draw 4 tiling backrounds on imgdest
-            {
-                //BitmapSource bm = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(Properties.Resources.b1.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                //BitmapSource bm = BitmapSource.Create(Properties.Resources.b1.Width, Properties.Resources.b1.Height, 96, 96, PixelFormats.Bgr32, null, Properties.Resources.b1, (Properties.Resources.b1.Width * PixelFormats.Bgr32.BitsPerPixel + 7) / 8);
-                //CachedBitmap cachedBitmap = new CachedBitmap(bm,BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-                //cachedBitmap.
+            //using (Graphics gr = Graphics.FromImage(imgdest)) //draw 4 tiling backrounds on imgdest
+            //{
+            //    //BitmapSource bm = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(Properties.Resources.b1.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            //    //BitmapSource bm = BitmapSource.Create(Properties.Resources.b1.Width, Properties.Resources.b1.Height, 96, 96, PixelFormats.Bgr32, null, Properties.Resources.b1, (Properties.Resources.b1.Width * PixelFormats.Bgr32.BitsPerPixel + 7) / 8);
+            //    //CachedBitmap cachedBitmap = new CachedBitmap(bm,BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+            //    //cachedBitmap.
 
-                gr.DrawImageUnscaledAndClipped(imgsrc,
-                    new Rectangle(-xoff, -yoff, parentForm.Width, parentForm.Height));
-                gr.DrawImageUnscaledAndClipped(imgsrc,
-                    new Rectangle(parentForm.Width - xoff, -yoff, parentForm.Width, parentForm.Height));
-                gr.DrawImageUnscaledAndClipped(imgsrc,
-                    new Rectangle(-xoff, parentForm.Height - yoff, parentForm.Width, parentForm.Height));
-                gr.DrawImageUnscaledAndClipped(imgsrc,
-                    new Rectangle(parentForm.Width - xoff, parentForm.Height - yoff, parentForm.Width, parentForm.Height));
-            }
+            //    gr.DrawImageUnscaledAndClipped(imgsrc,
+            //        new Rectangle(-xoff, -yoff, parentForm.Width, parentForm.Height));
+            //    gr.DrawImageUnscaledAndClipped(imgsrc,
+            //        new Rectangle(parentForm.Width - xoff, -yoff, parentForm.Width, parentForm.Height));
+            //    gr.DrawImageUnscaledAndClipped(imgsrc,
+            //        new Rectangle(-xoff, parentForm.Height - yoff, parentForm.Width, parentForm.Height));
+            //    gr.DrawImageUnscaledAndClipped(imgsrc,
+            //        new Rectangle(parentForm.Width - xoff, parentForm.Height - yoff, parentForm.Width, parentForm.Height));
+            //}
+            TextureBrush tb = new TextureBrush(imgsrc);
+            Graphics gr = Graphics.FromImage(imgdest);
+            tb.WrapMode = System.Drawing.Drawing2D.WrapMode.Tile;
+            gr.FillRectangle(tb, -xoff, -yoff, parentForm.Width, parentForm.Height);
+            gr.FillRectangle(tb, parentForm.Width - xoff, -yoff, parentForm.Width, parentForm.Height);
+            gr.FillRectangle(tb, -xoff, parentForm.Height - yoff, parentForm.Width, parentForm.Height);
+            gr.FillRectangle(tb, parentForm.Width - xoff, parentForm.Height - yoff, parentForm.Width, parentForm.Height);
             background.SendToBack();
             background.Image = imgdest; //update bg on form
             //imgdest.Dispose();
