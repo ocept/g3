@@ -123,20 +123,6 @@ namespace g3.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap r01 {
-            get {
-                object obj = ResourceManager.GetObject("r01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap r02 {
-            get {
-                object obj = ResourceManager.GetObject("r02", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap SpiderGold {
             get {
                 object obj = ResourceManager.GetObject("SpiderGold", resourceCulture);

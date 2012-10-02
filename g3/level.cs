@@ -416,7 +416,7 @@ namespace g3
                     if (mobs[i].Alive)
                     {
                         Image mobtodraw = (Image) rm.GetObject(mobs[i].iconPath);
-                        gr.DrawImageUnscaledAndClipped(mobtodraw, new Rectangle(mobs[i].xPos - screenOffsetX, mobs[i].yPos - screenOffsetY, mobtodraw.Width, mobtodraw.Height)); //TODO - change icon size automatically
+                        gr.DrawImageUnscaledAndClipped(mobtodraw, new Rectangle(mobs[i].xPos - screenOffsetX, mobs[i].yPos - screenOffsetY, mobtodraw.Width, mobtodraw.Height)); 
                     }
                 }
             }
