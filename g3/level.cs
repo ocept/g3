@@ -36,9 +36,9 @@ namespace g3
         public level(Form1 parentForm)
         {
             this.parentForm = parentForm;
-            //initialise timer to update level
-            
             newMob(mob.mobName.player);
+
+            //initialise timer to update level 
             timer.Interval = 33; 
             timer.Tick += new EventHandler(mainUpdate);
             timer.Enabled = true;
@@ -48,18 +48,17 @@ namespace g3
         }
         public void Dispose()
         {
-            //timer.Tick -= mainUpdate;
             timer.Dispose();
             background.Dispose();
         }
-        public void mainUpdate(object Sender, EventArgs e) //main update loop to be run periodically
+        public void mainUpdate(object Sender, EventArgs e) //main update loop to be run by timer
         {
             spawnMobs();
             spawnPowerups();
             playerControl(); //move player
             moveScreen(); //update screen offset
             mobTargetUpdate(); //change bearing of mobs
-            moveMobs(); //move mobs
+            moveMobs();
             mobAttacks(); //calculate mob attacks
             updateMobStatus(); //kill dead mobs
             updateStaticIcons();
@@ -69,9 +68,6 @@ namespace g3
             bgUpdate(); //draw background
             drawStaticIcons();
             drawMobs();
-
-            //colourTest();
-            //rotateToCursorTest();
             drawDarkness();
         }
 
@@ -107,55 +103,6 @@ namespace g3
             //gr2.DrawImageUnscaledAndClipped(overlay, new Rectangle(0, 0, 960, 600));
             gr.Dispose();
             gr2.Dispose();
-        }
-
-        private void rotateToCursorTest()
-        {
-            Point p = parentForm.PointToClient(System.Windows.Forms.Cursor.Position);
-            float y = parentForm.Height / 2 - p.Y;
-            float x = parentForm.Width / 2 - p.X;
-            float angle = (float)Math.Atan2(y, x);
-            using (Graphics gr = Graphics.FromImage(background.Image))
-            {
-                gr.TranslateTransform(parentForm.Width / 2 + 9, parentForm.Height / 2); //set origin to middle of screen
-                gr.RotateTransform(-180 + (float) (angle * (180 / Math.PI)));
-                gr.DrawImageUnscaledAndClipped(Properties.Resources.lightmask, new Rectangle(0 , -50, 300, 100));
-            }
-        }
-
-        private void colourTest()
-        {
-            Image testImg = new Bitmap(350, 350);
-            using (Graphics gr = Graphics.FromImage(testImg))
-            {
-                ImageAttributes ImgAttr = new ImageAttributes();
-                float[][] colmat = 
-                {
-                new float[] {1.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-                new float[] {0.0f, 1.0f, 0.0f, 0.0f, 0.0f},
-                new float[] {0.0f, 0.0f, 1.0f, 0.0f, 0.0f},
-                new float[] {0.0f, 0.0f, 0.0f, 1.0f, 0.0f},
-                new float[] {0.0f, 0.0f, 0.0f, 0.0f, 1.0f},
-                };
-                ColorMatrix ClrMatrix = new ColorMatrix(colmat);
-                //ImgAttr.SetColorMatrix(ClrMatrix);
-
-                System.Drawing.Color lowerColor = System.Drawing.Color.FromArgb(245, 245, 245);
-                System.Drawing.Color upperColor = System.Drawing.Color.FromArgb(255, 255, 255);
-                ImgAttr.SetColorKey(lowerColor,
-                    upperColor,
-                    ColorAdjustType.Default);
-                gr.RotateTransform(mobs[Player].XPos);
-                gr.DrawImageUnscaledAndClipped(Properties.Resources.colourtest2, new Rectangle(0, 0, 300, 300));
-                //gr.DrawImage(Properties.Resources.colourtest2, new Rectangle(50, 50, 300, 300), 50,50,300,300, GraphicsUnit.Pixel, ImgAttr);
-                gr.DrawImageUnscaledAndClipped(Properties.Resources.colourtest, new Rectangle(50, 50, 350, 350)) ;
-                //gr.DrawImage(Properties.Resources.colourtest2, new Rectangle(50, 50, 300, 300), 50, 50, 300, 300, GraphicsUnit.Pixel, ImgAttr);
-                //gr.DrawImage(Properties.Resources.colourtest, new Rectangle(50, 50, 300, 300), 50,50,300,300, GraphicsUnit.Pixel, ImgAttr);
-                
-                Graphics gr2 = Graphics.FromImage(background.Image);
-                gr2.DrawImage(testImg, new Rectangle(0, 0, 350, 350), 0, 0, 350, 350, GraphicsUnit.Pixel, ImgAttr);
-                gr2.Dispose();
-            }
         }
 
         private void updateStaticIcons()
